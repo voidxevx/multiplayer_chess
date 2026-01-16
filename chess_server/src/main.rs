@@ -1,6 +1,7 @@
 pub mod game {
     pub mod board;
     pub mod server_head;
+    pub mod player_filter_states;
 }
 
 use std::env;

@@ -23,7 +23,6 @@ impl LayerGroup {
             let layer_bytes: [u8; 8] = u64::to_ne_bytes(layer);
             bytes.append(&mut layer_bytes.to_vec());
         }
-        
 
         bytes
     }
