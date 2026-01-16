@@ -1,27 +1,21 @@
 pub mod game {
     pub mod board;
+    pub mod server_head;
 }
 
-use crate::game::board::{Board, BoardLocation};
+use std::env;
 
-fn main() {
-    let mut board: Board = Board::new();
-    board.add_layer(String::from("♔"), String::from("♚"));
-    board.add_layer(String::from("♕"), String::from("♛"));
-    board.add_layer(String::from("♖"), String::from("♜"));
-    board.add_layer(String::from("♗"), String::from("♝"));
-    board.add_layer(String::from("♘"), String::from("♞"));
-    board.add_layer(String::from("♙"), String::from("♟"));
+use crate::game::{board::Board, server_head::{self, Head}};
 
-    let loc = BoardLocation::new(1, 2);
-    board.toggle_location_active(4, &loc);
-    board.set_location_team(&loc, 0);
-    let formatted = board.print_board();
 
-    println!("\x1b[H\x1b[2J");
-    for i in 0..8 {
-        let str: String = formatted[i].clone().into_iter().collect();
-        println!("| {} | ", str);
-    }
+fn main() -> std::io::Result<()> {
+    let as_local = match env::args().nth(1) {
+        Some(n) => {
+            n == "local"   
+        }
+        _ => false,
+    };
 
+    let head: Head = Head::new(as_local);
+    head.recv_loop()
 }
